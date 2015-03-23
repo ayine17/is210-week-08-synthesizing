@@ -7,48 +7,58 @@ import authentication
 import getpass
 
 
-password = 'food'
+INCORRECT = 'Incorrect username or password. You have {} attempts left.'
 
 
+def login(username, maxattempts=3):
+    """implementing the structure of a login or authentication screen
+        Args:
+            username (str): A string representing the username of the user
+                            attempting to log in
 
-def login(username, maxattempts = 3):
-    """"""
-    incorrectPrt = 'Incorrect username or password. You have {} attempts left.'
-    
+            maxattempts (int, optional): An integer represent the maximum number
+                                         of prompted attempts before the
+                                         function returns False.
+        Returns:
+        passw (bool):True if the user has successfully authenticated before
+                     hitting the maximum number of attempts or False if they
+                     exceed that maximum number of failed attempts.
+
+    Examples:
+        >>> task_02.login('mike', 4)
+        Please enter your password:
+        Incorrect username or password. You have 3 attempts left.
+        Please enter your password:
+        Incorrect username or password. You have 2 attempts left.
+        Please enter your password:
+        Incorrect username or password. You have 1 attempts left.
+        Please enter your password:
+        Incorrect username or password. You have 0 attempts left.
+        False
+
+        >>> task_02.login('veruca', 2)
+        Please enter your password:
+        Incorrect username or password. You have 1 attempts left.
+        Please enter your password:
+        True
+
+    """
+
     passw = False
-   
+
     # inputs = raw_input('Please enter your password:')
-   
-    while(maxattempts <> 0 or maxattempts <0):
-        #inputs = raw_input('Please enter your password:')
-        inputs = getpass.getpass('Please enter your password:')
-        password = inputs.split()
+
+    while passw is False and maxattempts > 0:
+        # inputs = raw_input('Please enter your password:')
+        password = getpass.getpass('Please enter your password:')
         # authentication.authenticate(username, password)
-        if(password <> authentication.authenticate(username, password)):
+        passw = authentication.authenticate(username, password)
+
+        if passw is not False:
             passw = True
+
         else:
             maxattempts -= 1
-            
-            print incorrectPrt.format(maxattempts)
-            
-            passw
-            
-        
-        
+            print INCORRECT.format(maxattempts)
+
     return passw
-
-## import getpass
-
-##def login():
-##    user = input("Username [%s]: " % getpass.getuser())
-##    if not user:
-##        user = getpass.getuser()
-##
-##    pprompt = lambda: (getpass.getpass(), getpass.getpass('Retype password: '))
-##
-##    p1, p2 = pprompt()
-##    while p1 != p2:
-##        print('Passwords do not match. Try again')
-##        p1, p2 = pprompt()
-##
-##    return user, p1
